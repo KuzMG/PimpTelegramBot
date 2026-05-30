@@ -18,5 +18,5 @@ fun main(args: Array<String>) {
 
     val keyboardM1 = InlineKeyboardMarkup.builder()
         .keyboardRow(InlineKeyboardRow(next)).build()
-    bot.sendMenu(123,"",keyboardM1)
+    // bot.sendMenu(123,"",keyboardM1)
 }
