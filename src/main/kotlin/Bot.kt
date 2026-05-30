@@ -16,7 +16,7 @@ class Bot(token: String) : LongPollingSingleThreadUpdateConsumer {
 
     private val telegramClient = OkHttpTelegramClient(token)
     private val next = InlineKeyboardButton.builder()
-        .text("Добавить бота").callbackData("add_bot")
+        .text("Добавить бота").callbackData("/add_bot")
         .build();
 
     private val next2 = KeyboardButton.builder()
@@ -35,16 +35,24 @@ class Bot(token: String) : LongPollingSingleThreadUpdateConsumer {
         println(p0?.message?.isCommand)
         println(p0?.message?.text)
 
-        if (p0?.message?.isCommand == true) {
-            when (p0.message?.text) {
-                "/start_1" -> sendMenu(p0.message.chatId, "ds", keyboardM1)
-                "/start_2" -> sendMenu(p0.message.chatId, "ds", keyboardM2)
-            }
+        when (p0?.message?.text) {
+            "/start_1" -> sendMenu(p0.message.chatId, "ds", keyboardM1)
+            "/start_2" -> sendMenu(p0.message.chatId, "ds", keyboardM2)
+            "Добавить бота" -> addBot(p0.message.chatId)
+        }
+    }
+
+    fun addBot(who: Long) {
+        val sm = SendMessage.builder().text("Введите token").chatId(who).build()
+        try {
+            telegramClient.execute(sm)
+        } catch (e: TelegramApiException) {
+            throw RuntimeException(e)
         }
     }
 
     fun sendMenu(who: Long, txt: String, kb: InlineKeyboardMarkup?) {
-        val sm: SendMessage? = SendMessage.builder().chatId(who.toString())
+        val sm = SendMessage.builder().chatId(who.toString())
             .parseMode("HTML").text(txt)
             .replyMarkup(kb).build()
 
