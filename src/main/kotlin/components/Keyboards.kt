@@ -1,5 +1,6 @@
 package org.example.components
 
+import org.example.commands.Commands
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
@@ -11,7 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
     Инлайн клавитура показывается в чате
 */
 private val addBotInlineButton = InlineKeyboardButton.builder()
-    .text("Добавить бота").callbackData("/add_bot")
+    .text(Commands.ADD_BOT).callbackData(Commands.ADD_BOT)
     .build()
 
 val inlineKeyboard = InlineKeyboardMarkup.builder()
@@ -21,7 +22,7 @@ val inlineKeyboard = InlineKeyboardMarkup.builder()
     Клавиатура показывается под строкой ввода
 */
 private val addBotButton = KeyboardButton.builder()
-    .text("Добавить бота")
+    .text(Commands.ADD_BOT)
     .build()
 
 val keyboard = ReplyKeyboardMarkup.builder()

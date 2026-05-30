@@ -7,9 +7,9 @@ import org.telegram.telegrambots.client.okhttp.OkHttpTelegramClient
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 
 object Commands {
-    private const val ADD_BOT = "Добавить бота"
-    private const val START_1 = "/start_1"
-    private const val START_2 = "/start_2"
+    const val ADD_BOT = "Добавить бота"
+    const val START_1 = "/start_1"
+    const val START_2 = "/start_2"
 
     val map = mapOf(
         (ADD_BOT to ::addBot),
@@ -29,6 +29,7 @@ object Commands {
         SendMessage.builder()
             .chatId(who.toString())
             .parseMode("HTML")
+            .text("")
             .replyMarkup(keyboard)
             .build()
             .execute(telegramClient)
@@ -38,6 +39,7 @@ object Commands {
         SendMessage.builder()
             .chatId(who.toString())
             .parseMode("HTML")
+            .text("")
             .replyMarkup(inlineKeyboard)
             .build()
             .execute(telegramClient)
