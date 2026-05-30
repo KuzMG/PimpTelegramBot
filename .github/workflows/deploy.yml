@@ -18,10 +18,10 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           command_timeout: 30m
           script: |
+            cd ~/projects/PimpTelegramBot
             set -a
             source .env
             set +a
-            cd ~/projects/PimpTelegramBot
 
             echo "Pull latest code"
             git fetch origin
