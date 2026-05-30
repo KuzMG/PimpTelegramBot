@@ -11,7 +11,7 @@ fun main(args: Array<String>) {
     val botsApplication = TelegramBotsLongPollingApplication()
     val bot = Bot(args[0])
     val session = botsApplication.registerBot(args[0], bot)
-
+    println(session)
     val next = InlineKeyboardButton.builder()
         .text("Добавить бота").callbackData("add_bot")
         .build();
