@@ -18,8 +18,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             set -e
-            ls
-            cd /projects/PimpTelegramBot
+            cd ~/projects/PimpTelegramBot
 
             echo "Pull latest code"
             git fetch origin
