@@ -5,18 +5,31 @@ import org.telegram.telegrambots.longpolling.util.LongPollingSingleThreadUpdateC
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardRow
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException
 
-class Bot(token: String): LongPollingSingleThreadUpdateConsumer {
+class Bot(token: String) : LongPollingSingleThreadUpdateConsumer {
 
     private val telegramClient = OkHttpTelegramClient(token)
+    private val next = InlineKeyboardButton.builder()
+        .text("Добавить бота").callbackData("add_bot")
+        .build();
 
+    private val keyboardM1 = InlineKeyboardMarkup.builder()
+        .keyboardRow(InlineKeyboardRow(next)).build()
 
     override fun consume(p0: Update?) {
         println(p0)
         println(p0?.message?.chatId)
         println(p0?.message?.isCommand)
         println(p0?.message?.text)
+
+        if (p0?.message?.isCommand == true) {
+            when (p0.message?.text) {
+                "/start" -> sendMenu(p0.message.chatId, "ds", keyboardM1)
+            }
+        }
     }
 
     fun sendMenu(who: Long, txt: String, kb: InlineKeyboardMarkup?) {

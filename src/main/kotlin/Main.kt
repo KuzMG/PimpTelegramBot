@@ -12,11 +12,5 @@ fun main(args: Array<String>) {
     val bot = Bot(args[0])
     val session = botsApplication.registerBot(args[0], bot)
     println(session)
-    val next = InlineKeyboardButton.builder()
-        .text("Добавить бота").callbackData("add_bot")
-        .build();
 
-    val keyboardM1 = InlineKeyboardMarkup.builder()
-        .keyboardRow(InlineKeyboardRow(next)).build()
-    // bot.sendMenu(123,"",keyboardM1)
 }
