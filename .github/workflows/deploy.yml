@@ -1,4 +1,4 @@
-name: Build APK on server and restart
+name: Build JAR on server and run
 
 on:
   push:
@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Execute commands on server via SSH
+      - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SERVER_HOST }}
@@ -18,7 +18,10 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           command_timeout: 30m
           script: |
+            set -e
+
             cd ~/projects/PimpTelegramBot
+
             set -a
             source .env
             set +a
@@ -28,19 +31,21 @@ jobs:
             git reset --hard origin/main
 
             echo "Build project with Maven"
+            chmod +x mvnw
             ./mvnw clean package -DskipTests
 
             echo "Stop old app"
             if [ -f app.pid ]; then
               PID=$(cat app.pid)
-              if ps -p $PID > /dev/null 2>&1; then
-                kill $PID || true
+              if ps -p "$PID" > /dev/null 2>&1; then
+                kill "$PID" || true
               fi
               rm -f app.pid
             fi
 
-            pkill -f "pimp.jar" || true
-
             echo "Start new app"
             nohup java -jar target/pimp.jar "$MY_SECRET" >> app.log 2>&1 < /dev/null &
             echo $! > app.pid
+
+            sleep 3
+            echo "Started PID $(cat app.pid)"
