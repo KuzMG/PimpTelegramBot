@@ -1,11 +1,17 @@
 package org.example
 
+import org.example.manager.BotManager
 import org.telegram.telegrambots.longpolling.TelegramBotsLongPollingApplication
+import java.nio.file.Path
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 fun main(args: Array<String>) {
+    require(args.isNotEmpty()) { "Укажите token master-бота: java -jar pimp.jar <TOKEN>" }
+
+    val masterToken = args[0]
     val botsApplication = TelegramBotsLongPollingApplication()
-    val bot = Bot(args[0])
-    botsApplication.registerBot(args[0], bot)
+    val storagePath = Path.of("data", "bots.json")
+    val botManager = BotManager(botsApplication, storagePath, masterToken, DefaultWorkerBotFactory())
+
+    botManager.loadAll()
+    botsApplication.registerBot(masterToken, MasterBot(masterToken, botManager))
 }

@@ -3,6 +3,8 @@ package org.example.commands
 import org.example.components.inlineKeyboard
 import org.example.components.keyboard
 import org.example.ext.execute
+import org.example.session.SessionStore
+import org.example.session.UserState
 import org.telegram.telegrambots.client.okhttp.OkHttpTelegramClient
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 
@@ -18,8 +20,9 @@ object Commands {
     )
 
     private fun addBot(who: Long, telegramClient: OkHttpTelegramClient) {
+        SessionStore.set(who, UserState.AWAITING_BOT_TOKEN)
         SendMessage.builder()
-            .text("Введите token")
+            .text("Введите token бота из BotFather.\nДля отмены отправьте /cancel")
             .chatId(who)
             .build()
             .execute(telegramClient)
